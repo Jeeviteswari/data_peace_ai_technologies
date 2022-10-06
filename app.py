@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request
 app=Flask(__name__)
 
 users = [
@@ -128,9 +128,17 @@ users = [
 def welcome():
     return render_template("index.html",users = users)
 
-@app.route("/users", methods = ["GET"])
+@app.route("/users?page=1&limit=5&name=james&sort=_age", methods = ["GET"])
 def get_all_users():
-    return jsonify(users)
+      args = request.args
+      print(args)
+
+      for key,value in args.items():
+            print(key,value)
+
+      if "first_name" in args.keys():
+            print(args.get("first_name"))
+      return jsonify(users)
 
 @app.route("/users/<int:id>", methods = ["GET"])
 def get_one_user(id):
